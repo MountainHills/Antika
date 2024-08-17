@@ -8,6 +8,6 @@ public class Antika {
     private static final Logger log = LoggerFactory.getLogger(Antika.class);
 
     public static void main(String[] args) {
-        log.info("Hello and welcome to Antika");
+        log.debug("Hello and welcome to Antika");
     }
 }
