@@ -14,11 +14,12 @@ public class Antika {
 
     private static final Logger log = LoggerFactory.getLogger(Antika.class);
 
-    private static final Option OPTION_DISPLAY = Option.builder("d")
-            .longOpt("display")
+    private static final Option OPTION_DISPLAY = Option.builder("m")
+            .longOpt("message")
             .hasArg()
             .argName("message")
-            .desc("Enter a message to display")
+            .desc("Notification message")
+            .required(false)
             .build();
 
     private static Options setupOptions() {
