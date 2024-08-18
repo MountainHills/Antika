@@ -22,36 +22,28 @@
  * SOFTWARE.
  */
 
-package com.antonbondoc;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Locale;
-import java.util.Map;
-
+package com.antonbondoc.command;
 
 /**
- * The Anika application entry point
+ * The commands for the Antika application.
  */
-public class Antika {
-    private static final Logger log = LoggerFactory.getLogger(Antika.class);
+public class Commands {
 
-    private static final Map<String, String> COMMANDS = Map.of(
-            "add", "Addition Class",
-            "subtract", "Subtraction Class"
-    );
+    /**
+     * An object which describes a type of command handler. This includes information like its name and help text
+     */
+    public interface Type {
+        String name();
 
-    public static void main(String[] args) {
-        if (args.length == 0)
-            throw new IllegalArgumentException("No console arguments");
+        String description();
 
-        String command = args[0].toLowerCase(Locale.ROOT);
+        Handler createHandler();
+    }
 
-        if (!COMMANDS.containsKey(command))
-            throw new IllegalArgumentException("Invalid command");
-
-        String handler = COMMANDS.get(command);
-        System.out.println("handler = " + handler);
+    /**
+     * Command handler objects are instantiated with specific arguments to execute commands.
+     */
+    public interface Handler {
+        void run();
     }
 }
