@@ -36,10 +36,15 @@ public class Antika {
             .desc("Notification message")
             .build();
 
+    private static final Option OPTION_HELP = Option.builder("help")
+            .desc("List out all the available flags for the application")
+            .build();
+
     private static Options setupOptions() {
         return new Options()
                 .addOption(OPTION_DISPLAY)
-                .addOption(OPTION_OUT);
+                .addOption(OPTION_OUT)
+                .addOption(OPTION_HELP);
     }
 
     public static void main(String[] args) {
@@ -56,9 +61,12 @@ public class Antika {
     }
 
     private static void processOptions(CommandLine cmd, HelpFormatter formatter, Options options) throws ParseException {
-        if (cmd.hasOption(OPTION_DISPLAY)) {
+        if (cmd.hasOption(OPTION_HELP)) {
+            formatter.printHelp("antika", options);
+            System.exit(0);
+        } else if (cmd.hasOption(OPTION_DISPLAY)) {
             String message = cmd.getOptionValue(OPTION_DISPLAY);
-            log.info("message: {}", message);
+            log.trace("message: {}", message);
         } else if (cmd.hasOption(OPTION_OUT)) {
             Integer hours = cmd.getParsedOptionValue(OPTION_OUT);
             log.debug("parsed hours: {}", hours);
