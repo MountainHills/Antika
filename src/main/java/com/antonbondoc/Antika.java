@@ -24,6 +24,8 @@
 
 package com.antonbondoc;
 
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +39,15 @@ import java.util.Map;
 public class Antika {
     private static final Logger log = LoggerFactory.getLogger(Antika.class);
 
+    private static final Options MAIN_COMMANDS;
+
+    static {
+        MAIN_COMMANDS = new Options()
+                .addOption("help", "Display this help message")
+                .addOption("list", "List of available workflows")
+                .addOption("workflow", "Enter workflow application");
+    }
+
     private static final Map<String, String> COMMANDS = Map.of(
             "help", "Help Class",
             "list", "List Class",
@@ -44,15 +55,22 @@ public class Antika {
     );
 
     public static void main(String[] args) {
-        if (args.length == 0)
-            throw new IllegalArgumentException("No console arguments");
-
+        if (args.length == 0) {
+            handleCommandExceptions("There are no command line arguments");
+        }
         String command = args[0].toLowerCase(Locale.ROOT);
-
-        if (!COMMANDS.containsKey(command))
-            throw new IllegalArgumentException("Invalid command");
-
+        if (!COMMANDS.containsKey(command)) {
+            handleCommandExceptions("The command is invalid");
+        }
         String handler = COMMANDS.get(command);
         System.out.println("handler = " + handler);
+    }
+
+    private static void handleCommandExceptions(String message) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.setOptPrefix("");
+        formatter.printHelp("antika [command]", MAIN_COMMANDS);
+        System.err.println(message);
+        System.exit(1);
     }
 }
