@@ -43,7 +43,6 @@ public class Antika {
     }
 
     public static void main(String[] args) {
-        log.debug("Starting Antika...");
         Options options = setupOptions();
 
         HelpFormatter formatter = new HelpFormatter();
@@ -53,8 +52,6 @@ public class Antika {
             processOptions(cmd, formatter, options);
         } catch (ParseException e) {
             formatter.printHelp("antika", options);
-            log.error("Parsing error occurred | message: {}", e.getMessage());
-            e.printStackTrace();
         }
     }
 
