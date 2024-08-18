@@ -1,100 +1,40 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) [2024] [Anton Bondoc]
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.antonbondoc;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Timer;
-import java.util.TimerTask;
 
+/**
+ * The Anika application entry point
+ */
 public class Antika {
-
     private static final Logger log = LoggerFactory.getLogger(Antika.class);
 
-    private static final Option OPTION_OUT = Option.builder("out")
-            .hasArg()
-            .argName("hours")
-            .optionalArg(true)
-            .type(Integer.class)
-            .desc("Notifies me after given hours work shift. The <hours> argument is optional")
-            .build();
-
-    private static final Option OPTION_DISPLAY = Option.builder("m")
-            .longOpt("message")
-            .hasArg()
-            .argName("message")
-            .optionalArg(false)
-            .desc("Notification message")
-            .build();
-
-    private static final Option OPTION_HELP = Option.builder("help")
-            .desc("List out all the available flags for the application")
-            .build();
-
-    private static Options setupOptions() {
-        return new Options()
-                .addOption(OPTION_DISPLAY)
-                .addOption(OPTION_OUT)
-                .addOption(OPTION_HELP);
-    }
-
     public static void main(String[] args) {
-        Options options = setupOptions();
 
-        HelpFormatter formatter = new HelpFormatter();
-        CommandLineParser parser = new DefaultParser();
-        try {
-            CommandLine cmd = parser.parse(options, args);
-            processOptions(cmd, formatter, options);
-        } catch (ParseException e) {
-            formatter.printHelp("antika", options);
-        }
     }
-
-    private static void processOptions(CommandLine cmd, HelpFormatter formatter, Options options) throws ParseException {
-        if (cmd.hasOption(OPTION_HELP)) {
-            formatter.printHelp("antika", options);
-            System.exit(0);
-        } else if (cmd.hasOption(OPTION_DISPLAY)) {
-            String message = cmd.getOptionValue(OPTION_DISPLAY);
-            log.trace("message: {}", message);
-        } else if (cmd.hasOption(OPTION_OUT)) {
-            Integer hours = cmd.getParsedOptionValue(OPTION_OUT);
-            log.debug("parsed hours: {}", hours);
-            processOptionOut(hours == null ? 9 : hours);
-        } else {
-            formatter.printHelp("antika", options);
-        }
-    }
-
-    private static void processOptionOut(int hours) {
-        LocalDateTime ldt = LocalDateTime.now();
-        LocalDateTime offTime = ldt.plusSeconds(hours); // TODO: Change to hours
-
-        long timeIn = ldt.toInstant(ZoneOffset.UTC).toEpochMilli();
-        long timeOut = offTime.toInstant(ZoneOffset.UTC).toEpochMilli();
-        long difference = timeOut - timeIn;
-
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                JFrame frame = new JFrame();
-                frame.setAlwaysOnTop(true);
-                JOptionPane.showMessageDialog(frame, "You can now go out!");
-                System.exit(0);
-            }
-        };
-        timer.schedule(task, difference);
-    }
-
 }
