@@ -24,47 +24,37 @@
 
 package com.antonbondoc.command;
 
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NavigableMap;
-import java.util.TreeMap;
-
 /**
- * The commands for the Antika application.
+ * Implements the help command.
  */
-public class Commands {
-    public static final NavigableMap<String, Type> TYPES;
+public class HelpCommandHandler implements Commands.Handler {
+    public static final Commands.Type TYPE = new HelpCommandType();
 
-    static {
-        List<Type> typeList = List.of(
-                HelpCommandHandler.TYPE
-        );
+    public static class HelpCommandType implements Commands.Type {
 
-        TreeMap<String, Type> typesMap = new TreeMap<>();
-        for (Type type : typeList) {
-            typesMap.put(type.name(), type);
+        @Override
+        public String name() {
+            return "help";
         }
 
-        TYPES = Collections.unmodifiableNavigableMap(typesMap);
+        @Override
+        public String description() {
+            return "Display this help message";
+        }
+
+        @Override
+        public Commands.Handler createHandler() {
+            return new HelpCommandHandler();
+        }
     }
 
-    /**
-     * An object which describes a type of command handler. This includes information like its name and help text
-     */
-    public interface Type {
-        String name();
-
-        String description();
-
-        Handler createHandler();
-    }
-
-    /**
-     * Command handler objects are instantiated with specific arguments to execute commands.
-     */
-    public interface Handler {
-        void run(Options options, String[] args);
+    @Override
+    public void run(Options options, String[] args) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.setOptPrefix("");
+        formatter.printHelp("antika [command]", options);
     }
 }
