@@ -38,8 +38,9 @@ public class Antika {
     private static final Logger log = LoggerFactory.getLogger(Antika.class);
 
     private static final Map<String, String> COMMANDS = Map.of(
-            "add", "Addition Class",
-            "subtract", "Subtraction Class"
+            "help", "Help Class",
+            "list", "List Class",
+            "mode", "Mode Class"
     );
 
     public static void main(String[] args) {
