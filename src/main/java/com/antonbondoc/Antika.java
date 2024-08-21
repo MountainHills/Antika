@@ -34,7 +34,7 @@ import java.util.Map;
 
 
 /**
- * The Anika application entry point
+ * The Antika application entry point
  */
 public class Antika {
     private static final Logger log = LoggerFactory.getLogger(Antika.class);
