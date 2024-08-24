@@ -26,47 +26,32 @@ package com.antonbondoc.command;
 
 import org.apache.commons.cli.Options;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NavigableMap;
-import java.util.TreeMap;
-
 /**
- * The commands for the Antika application.
+ * Implements the flow command.
  */
-public class Commands {
-    public static final NavigableMap<String, Type> TYPES;
+public class FlowCommandHandler implements Commands.Handler {
+    public static final Commands.Type TYPE = new FlowCommandType();
 
-    static {
-        List<Type> typeList = List.of(
-                HelpCommandHandler.TYPE,
-                ListCommandHandler.TYPE,
-                FlowCommandHandler.TYPE
-        );
+    public static class FlowCommandType implements Commands.Type {
 
-        TreeMap<String, Type> typesMap = new TreeMap<>();
-        for (Type type : typeList) {
-            typesMap.put(type.name(), type);
+        @Override
+        public String name() {
+            return "flow";
         }
 
-        TYPES = Collections.unmodifiableNavigableMap(typesMap);
+        @Override
+        public String description() {
+            return "Enter workflow application";
+        }
+
+        @Override
+        public Commands.Handler createHandler() {
+            return new FlowCommandHandler();
+        }
     }
 
-    /**
-     * An object which describes a type of command handler. This includes information like its name and help text
-     */
-    public interface Type {
-        String name();
-
-        String description();
-
-        Handler createHandler();
-    }
-
-    /**
-     * Command handler objects are instantiated with specific arguments to execute commands.
-     */
-    public interface Handler {
-        void run(Options options, String[] args);
+    @Override
+    public void run(Options options, String[] args) {
+        System.exit(0);
     }
 }

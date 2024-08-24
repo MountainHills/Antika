@@ -24,6 +24,7 @@
 
 package com.antonbondoc;
 
+import com.antonbondoc.command.FlowCommandHandler;
 import com.antonbondoc.command.HelpCommandHandler;
 import com.antonbondoc.command.ListCommandHandler;
 import org.apache.commons.cli.CommandLine;
@@ -78,7 +79,7 @@ public class Antika {
             var handler = new ListCommandHandler();
             handler.run(MAIN_COMMANDS, cmd.getArgs());
         } else if (cmd.hasOption("flow")) {
-            var handler = new HelpCommandHandler();
+            var handler = new FlowCommandHandler();
             handler.run(MAIN_COMMANDS, cmd.getArgs());
         } else {
             handleMainCommandsExceptions("No command entered");
