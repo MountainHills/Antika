@@ -25,6 +25,7 @@
 package com.antonbondoc;
 
 import com.antonbondoc.command.HelpCommandHandler;
+import com.antonbondoc.command.ListCommandHandler;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -44,7 +45,7 @@ public class Antika {
     static {
         MAIN_COMMANDS = new Options()
                 .addOption("help", "Display this help message")
-                .addOption("list", "List of available workflows")
+                .addOption("list", "Display list of available workflows")
                 .addOption("flow", "Enter workflow application");
 
         // Remove the '-' prefix in help formatter, to make it more command-like when help is printed
@@ -52,7 +53,7 @@ public class Antika {
     }
 
     public static void main(String[] args) {
-        args = new String[] {"flow"};
+        args = new String[]{"flow"};
         CommandLineParser parser = new DefaultParser();
         try {
             if (args.length == 0) {
@@ -73,19 +74,15 @@ public class Antika {
         if (cmd.hasOption("help")) {
             var handler = new HelpCommandHandler();
             handler.run(MAIN_COMMANDS, cmd.getArgs());
-        }
-
-        if (cmd.hasOption("list")) {
+        } else if (cmd.hasOption("list")) {
+            var handler = new ListCommandHandler();
+            handler.run(MAIN_COMMANDS, cmd.getArgs());
+        } else if (cmd.hasOption("flow")) {
             var handler = new HelpCommandHandler();
             handler.run(MAIN_COMMANDS, cmd.getArgs());
+        } else {
+            handleMainCommandsExceptions("No command entered");
         }
-
-        if (cmd.hasOption("flow")) {
-            var handler = new HelpCommandHandler();
-            handler.run(MAIN_COMMANDS, cmd.getArgs());
-        }
-
-        handleMainCommandsExceptions("No command entered");
     }
 
     /**
