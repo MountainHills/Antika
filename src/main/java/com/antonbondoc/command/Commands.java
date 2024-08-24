@@ -37,6 +37,7 @@ import java.util.TreeMap;
 public class Commands {
     public static final NavigableMap<String, Type> TYPES;
 
+    // TODO: Improvement can be done here to make the main class cleaner
     static {
         List<Type> typeList = List.of(
                 HelpCommandHandler.TYPE,
@@ -55,6 +56,7 @@ public class Commands {
     /**
      * An object which describes a type of command handler. This includes information like its name and help text
      */
+    // TODO: This interface could be improved more
     public interface Type {
         String name();
 

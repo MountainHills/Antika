@@ -43,6 +43,7 @@ public class Antika {
 
     private static final HelpFormatter MAIN_HELP_FORMATTER = new HelpFormatter();
 
+    // TODO: If the commands class is properly set up we would not be using these anymore.
     static {
         MAIN_COMMANDS = new Options()
                 .addOption("help", "Display this help message")
@@ -54,7 +55,8 @@ public class Antika {
     }
 
     public static void main(String[] args) {
-        args = new String[]{"flow"};
+        args = new String[] {"help"};
+
         CommandLineParser parser = new DefaultParser();
         try {
             if (args.length == 0) {
@@ -71,6 +73,7 @@ public class Antika {
     /**
      * Only processes the first argument of the command line
      */
+    // TODO: Many potential room for improvement here. There are a lot of duplicate code.
     private static void processOptions(CommandLine cmd) {
         if (cmd.hasOption("help")) {
             var handler = new HelpCommandHandler();
