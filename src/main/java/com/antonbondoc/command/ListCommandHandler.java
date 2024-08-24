@@ -24,11 +24,10 @@
 
 package com.antonbondoc.command;
 
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
 /**
- * Implements the root help command.
+ * Implements the list command.
  */
 public class ListCommandHandler implements Commands.Handler {
     public static final Commands.Type TYPE = new ListCommandType();
