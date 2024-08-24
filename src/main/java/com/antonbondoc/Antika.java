@@ -24,52 +24,82 @@
 
 package com.antonbondoc;
 
+import com.antonbondoc.command.HelpCommandHandler;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Locale;
-import java.util.Map;
+import org.apache.commons.cli.ParseException;
 
 
 /**
- * The Antika application entry point
+ * The Antika application entry point.
  */
 public class Antika {
-    private static final Logger log = LoggerFactory.getLogger(Antika.class);
-
     private static final Options MAIN_COMMANDS;
+
+    private static final HelpFormatter MAIN_HELP_FORMATTER = new HelpFormatter();
 
     static {
         MAIN_COMMANDS = new Options()
                 .addOption("help", "Display this help message")
                 .addOption("list", "List of available workflows")
-                .addOption("workflow", "Enter workflow application");
-    }
+                .addOption("flow", "Enter workflow application");
 
-    private static final Map<String, String> COMMANDS = Map.of(
-            "help", "Help Class",
-            "list", "List Class",
-            "mode", "Mode Class"
-    );
+        // Remove the '-' prefix in help formatter, to make it more command-like when help is printed
+        MAIN_HELP_FORMATTER.setOptPrefix("");
+    }
 
     public static void main(String[] args) {
-        if (args.length == 0) {
-            handleCommandExceptions("There are no command line arguments");
+        args = new String[] {"flow"};
+        CommandLineParser parser = new DefaultParser();
+        try {
+            if (args.length == 0) {
+                throw new ParseException("No command entered");
+            }
+            addHyphenToMainCommand(args);
+            CommandLine cmd = parser.parse(MAIN_COMMANDS, args);
+            processOptions(cmd);
+        } catch (ParseException e) {
+            handleMainCommandsExceptions(e.getMessage());
         }
-        String command = args[0].toLowerCase(Locale.ROOT);
-        if (!COMMANDS.containsKey(command)) {
-            handleCommandExceptions("The command is invalid");
-        }
-        String handler = COMMANDS.get(command);
-        System.out.println("handler = " + handler);
     }
 
-    private static void handleCommandExceptions(String message) {
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.setOptPrefix("");
-        formatter.printHelp("antika [command]", MAIN_COMMANDS);
+    /**
+     * Only processes the first argument of the command line
+     */
+    private static void processOptions(CommandLine cmd) {
+        if (cmd.hasOption("help")) {
+            var handler = new HelpCommandHandler();
+            handler.run(MAIN_COMMANDS, cmd.getArgs());
+        }
+
+        if (cmd.hasOption("list")) {
+            var handler = new HelpCommandHandler();
+            handler.run(MAIN_COMMANDS, cmd.getArgs());
+        }
+
+        if (cmd.hasOption("flow")) {
+            var handler = new HelpCommandHandler();
+            handler.run(MAIN_COMMANDS, cmd.getArgs());
+        }
+
+        handleMainCommandsExceptions("No command entered");
+    }
+
+    /**
+     * Adds a hyphen '-' to the first argument of the command line
+     */
+    private static void addHyphenToMainCommand(String[] args) {
+        if (args[0] != null) {
+            String temp = "-" + args[0];
+            args[0] = temp;
+        }
+    }
+
+    private static void handleMainCommandsExceptions(String message) {
+        MAIN_HELP_FORMATTER.printHelp("antika [command]", MAIN_COMMANDS);
         System.err.println(message);
         System.exit(1);
     }

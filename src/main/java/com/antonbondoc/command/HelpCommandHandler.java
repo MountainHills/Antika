@@ -28,7 +28,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 
 /**
- * Implements the help command.
+ * Implements the root help command.
  */
 public class HelpCommandHandler implements Commands.Handler {
     public static final Commands.Type TYPE = new HelpCommandType();
@@ -56,5 +56,6 @@ public class HelpCommandHandler implements Commands.Handler {
         HelpFormatter formatter = new HelpFormatter();
         formatter.setOptPrefix("");
         formatter.printHelp("antika [command]", options);
+        System.exit(0);
     }
 }
