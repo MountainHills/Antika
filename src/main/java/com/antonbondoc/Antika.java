@@ -84,8 +84,6 @@ public class Antika {
         } else if (cmd.hasOption("flow")) {
             var handler = new FlowCommandHandler();
             handler.run(MAIN_COMMANDS, cmd.getArgs());
-        } else {
-            handleMainCommandsExceptions("No command entered");
         }
     }
 
