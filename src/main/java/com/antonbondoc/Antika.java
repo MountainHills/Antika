@@ -55,7 +55,7 @@ public class Antika {
     }
 
     public static void main(String[] args) {
-        args = new String[] {"help"};
+        args = new String[] {"list"};
 
         CommandLineParser parser = new DefaultParser();
         try {

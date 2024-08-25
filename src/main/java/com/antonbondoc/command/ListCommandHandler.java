@@ -25,6 +25,9 @@
 package com.antonbondoc.command;
 
 import org.apache.commons.cli.Options;
+import org.apache.commons.csv.CSVFormat;
+
+import java.util.Set;
 
 /**
  * Implements the list command.
@@ -50,10 +53,14 @@ public class ListCommandHandler implements Commands.Handler {
         }
     }
 
-    // TODO: Implement CSV reading and if not exists then create the workflow
     @Override
     public void run(Options options, String[] args) {
-
+        Set<String> workflows = CsvUtils.getWorkflows();
+        int idx = 0;
+        System.out.println("List of Antika Workflows");
+        for (String workflow : workflows) {
+            System.out.printf("%d. %s%n", ++idx, workflow);
+        }
         System.exit(0);
     }
 }

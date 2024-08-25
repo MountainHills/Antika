@@ -32,7 +32,7 @@ public record Tool(String mode, Type type, String path) {
      *
      * @return tool values as string array
      */
-    public String[] toStringArray() {
+    public String[] values() {
         return new String[]{mode, type.name(), path};
     }
 }

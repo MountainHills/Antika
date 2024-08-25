@@ -69,7 +69,7 @@ public class CsvUtils {
      *
      * @return set of unique workflows available in Antika
      */
-    public Set<String> getWorkflows() {
+    public static Set<String> getWorkflows() {
         return getTools().stream()
                 .map(Tool::mode)
                 .collect(Collectors.toSet());
@@ -82,7 +82,7 @@ public class CsvUtils {
      *
      * @return list of tools available in workflow.csv
      */
-    private List<Tool> getTools() {
+    private static List<Tool> getTools() {
         if (!WORKFLOW_FILE.exists()) {
             createWorkflowFile();
         }
@@ -96,7 +96,6 @@ public class CsvUtils {
                 String mode = record.get(Headers.MODE);
                 String type = record.get(Headers.TYPE);
                 String path = record.get(Headers.PATH);
-
                 tools.add(new Tool(mode, Type.get(type), path));
             }
         } catch (IOException ex) {
@@ -111,7 +110,7 @@ public class CsvUtils {
      * @param record the tool provided in the csv file
      * @return true if at least one value in the record is empty, false otherwise.
      */
-    private boolean hasEmptyValues(CSVRecord record) {
+    private static boolean hasEmptyValues(CSVRecord record) {
         return Stream.of(record.values())
                 .anyMatch(v -> v.trim().isEmpty());
     }
@@ -119,10 +118,11 @@ public class CsvUtils {
     /**
      * Create the `workflow.csv` file that would hold the tools configurations
      */
-    private void createWorkflowFile() {
+    private static void createWorkflowFile() {
         try (FileWriter out = new FileWriter(WORKFLOW_FILE, StandardCharsets.UTF_8)) {
             CSVPrinter printer = new CSVPrinter(out, CSV_FORMAT);
-            printer.printRecord((Object[]) EXAMPLE_TOOL.toStringArray());
+            printer.printRecord((Object[]) Headers.values());
+            printer.printRecord((Object[]) EXAMPLE_TOOL.values());
         } catch (IOException ex) {
             System.err.println("ex = " + ex.getMessage());
         }
