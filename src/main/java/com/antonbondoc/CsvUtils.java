@@ -52,6 +52,9 @@ public class CsvUtils {
 
     private static final Logger log = LoggerFactory.getLogger(CsvUtils.class);
 
+    /**
+     * The headers for the workflow csv file
+     */
     private enum Headers {
         MODE, TYPE, PATH
     }
@@ -116,17 +119,6 @@ public class CsvUtils {
     }
 
     /**
-     * Checks whether the record has an empty value
-     *
-     * @param record the tool provided in the csv file
-     * @return true if at least one value in the record is empty, false otherwise.
-     */
-    private static boolean hasEmptyValues(CSVRecord record) {
-        return Stream.of(record.values())
-                .anyMatch(v -> v.trim().isEmpty());
-    }
-
-    /**
      * Create the `workflow.csv` file that would hold the tools configurations
      */
     private static void createWorkflowFile() {
@@ -140,5 +132,16 @@ public class CsvUtils {
         } catch (IOException ex) {
             System.err.println("ex = " + ex.getMessage());
         }
+    }
+
+    /**
+     * Checks whether the record has an empty value
+     *
+     * @param record the tool provided in the csv file
+     * @return true if at least one value in the record is empty, false otherwise.
+     */
+    private static boolean hasEmptyValues(CSVRecord record) {
+        return Stream.of(record.values())
+                .anyMatch(v -> v.trim().isEmpty());
     }
 }

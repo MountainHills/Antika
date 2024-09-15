@@ -34,6 +34,8 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
+
 
 /**
  * The Antika application entry point.
@@ -73,7 +75,8 @@ public class Antika {
             printHelp(options);
             System.exit(0);
         } else if (cmd.hasOption(OPTION_MODE)) {
-            openWorkflow();
+            String workflow = cmd.getOptionValue(OPTION_MODE).trim();
+            openWorkflow(workflow);
             System.exit(0);
         } else {
             System.err.println("The args passed is not part of the options");
@@ -81,8 +84,36 @@ public class Antika {
         }
     }
 
-    private static void openWorkflow() {
-        // No-op
+    /**
+     * Open all tools related to the given workflow.
+     * <p>
+     * If the workflow is not valid, it would list out the available workflow selections
+     *
+     * @param workflow the chosen workflow
+     */
+    private static void openWorkflow(String workflow) {
+        Set<String> availableWorkflows = CsvUtils.getWorkflows();
+        if (availableWorkflows.contains(workflow)) {
+            // TODO: Open the tools related to workflow
+            // No-op
+        } else {
+            printWorkflows(availableWorkflows);
+            System.err.printf("Workflow: %s is not a valid workflow", workflow);
+            System.exit(-1);
+        }
+    }
+
+    /**
+     * Prints out the list of available workflows for Antika
+     *
+     * @param workflows the set of available workflows
+     */
+    private static void printWorkflows(Set<String> workflows) {
+        int idx = 0;
+        System.out.println("List of Antika Workflows");
+        for (String workflow : workflows) {
+            System.out.printf("%d. %s%n", ++idx, workflow);
+        }
     }
 
     /**
