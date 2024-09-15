@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.antonbondoc.command;
+package com.antonbondoc;
 
 import java.util.Collections;
 import java.util.HashMap;

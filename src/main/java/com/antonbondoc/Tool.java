@@ -22,40 +22,17 @@
  * SOFTWARE.
  */
 
-package com.antonbondoc.command;
+package com.antonbondoc;
 
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
+public record Tool(String mode, Type type, String path) {
 
-/**
- * Implements the root help command.
- */
-public class HelpCommandHandler implements Commands.Handler {
-    public static final Commands.Type TYPE = new HelpCommandType();
-
-    public static class HelpCommandType implements Commands.Type {
-
-        @Override
-        public String name() {
-            return "help";
-        }
-
-        @Override
-        public String description() {
-            return "Display this help message";
-        }
-
-        @Override
-        public Commands.Handler createHandler() {
-            return new HelpCommandHandler();
-        }
-    }
-
-    @Override
-    public void run(Options options, String[] args) {
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.setOptPrefix("");
-        formatter.printHelp("antika [command]", options);
-        System.exit(0);
+    /**
+     * Transforms the tool object to string array.
+     * It would be used to write the records to the CSV
+     *
+     * @return tool values as string array
+     */
+    public String[] values() {
+        return new String[]{mode, type.name(), path};
     }
 }

@@ -24,9 +24,6 @@
 
 package com.antonbondoc;
 
-import com.antonbondoc.command.FlowCommandHandler;
-import com.antonbondoc.command.HelpCommandHandler;
-import com.antonbondoc.command.ListCommandHandler;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -40,29 +37,21 @@ import org.apache.commons.cli.ParseException;
  */
 public class Antika {
     private static final Options MAIN_COMMANDS;
-
     private static final HelpFormatter MAIN_HELP_FORMATTER = new HelpFormatter();
 
-    // TODO: If the commands class is properly set up we would not be using these anymore.
     static {
         MAIN_COMMANDS = new Options()
                 .addOption("help", "Display this help message")
                 .addOption("list", "Display list of available workflows")
                 .addOption("flow", "Enter workflow application");
-
-        // Remove the '-' prefix in help formatter, to make it more command-like when help is printed
-        MAIN_HELP_FORMATTER.setOptPrefix("");
     }
 
     public static void main(String[] args) {
-        args = new String[] {"list"};
-
         CommandLineParser parser = new DefaultParser();
         try {
             if (args.length == 0) {
                 throw new ParseException("No command entered");
             }
-            addHyphenToMainCommand(args);
             CommandLine cmd = parser.parse(MAIN_COMMANDS, args);
             processOptions(cmd);
         } catch (ParseException e) {
@@ -70,31 +59,8 @@ public class Antika {
         }
     }
 
-    /**
-     * Only processes the first argument of the command line
-     */
-    // TODO: Many potential room for improvement here. There are a lot of duplicate code.
     private static void processOptions(CommandLine cmd) {
-        if (cmd.hasOption("help")) {
-            var handler = new HelpCommandHandler();
-            handler.run(MAIN_COMMANDS, cmd.getArgs());
-        } else if (cmd.hasOption("list")) {
-            var handler = new ListCommandHandler();
-            handler.run(MAIN_COMMANDS, cmd.getArgs());
-        } else if (cmd.hasOption("flow")) {
-            var handler = new FlowCommandHandler();
-            handler.run(MAIN_COMMANDS, cmd.getArgs());
-        }
-    }
-
-    /**
-     * Adds a hyphen '-' to the first argument of the command line
-     */
-    private static void addHyphenToMainCommand(String[] args) {
-        if (args[0] != null) {
-            String temp = "-" + args[0];
-            args[0] = temp;
-        }
+        // No-op
     }
 
     private static void handleMainCommandsExceptions(String message) {
