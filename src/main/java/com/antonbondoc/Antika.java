@@ -62,6 +62,11 @@ public class Antika {
                 .addOption(OPTION_MODE);
     }
 
+    /**
+     * Handle the arguments given by the user to use Antika
+     *
+     * @param cmd the command line containing the argument parameters passed by the user
+     */
     private static void processOptions(CommandLine cmd) {
         // No-op
     }
@@ -70,6 +75,12 @@ public class Antika {
         // No-op
     }
 
+    /**
+     * Prints out the list of available flags (options) for Antika
+     *
+     * @param options the available flags for Antika
+     * @param message the cause of the error to print out the help command
+     */
     private static void printHelp(Options options, String message) {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("antika [option]", options);
