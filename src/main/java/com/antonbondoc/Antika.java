@@ -36,11 +36,11 @@ import org.apache.commons.cli.ParseException;
  * The Antika application entry point.
  */
 public class Antika {
-    private static final Options MAIN_COMMANDS;
+    private static final Options OPTIONS;
     private static final HelpFormatter MAIN_HELP_FORMATTER = new HelpFormatter();
 
     static {
-        MAIN_COMMANDS = new Options()
+        OPTIONS = new Options()
                 .addOption("help", "Display this help message")
                 .addOption("list", "Display list of available workflows")
                 .addOption("flow", "Enter workflow application");
@@ -52,10 +52,10 @@ public class Antika {
             if (args.length == 0) {
                 throw new ParseException("No command entered");
             }
-            CommandLine cmd = parser.parse(MAIN_COMMANDS, args);
+            CommandLine cmd = parser.parse(OPTIONS, args);
             processOptions(cmd);
         } catch (ParseException e) {
-            handleMainCommandsExceptions(e.getMessage());
+            printHelp(e.getMessage());
         }
     }
 
@@ -63,8 +63,8 @@ public class Antika {
         // No-op
     }
 
-    private static void handleMainCommandsExceptions(String message) {
-        MAIN_HELP_FORMATTER.printHelp("antika [command]", MAIN_COMMANDS);
+    private static void printHelp(String message) {
+        MAIN_HELP_FORMATTER.printHelp("antika [command]", OPTIONS);
         System.err.println(message);
         System.exit(1);
     }

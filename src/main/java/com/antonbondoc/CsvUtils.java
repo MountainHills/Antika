@@ -66,7 +66,10 @@ public class CsvUtils {
             .setIgnoreEmptyLines(true)
             .build();
 
-    private static final Tool EXAMPLE_TOOL = new Tool("example", ToolType.APP, "notepad.exe");
+    private static final List<Tool> TOOL_EXAMPLES = List.of(
+            new Tool("example", ToolType.APP, "notepad.exe"),
+            new Tool("example", ToolType.WEB, "https://www.google.com/")
+    );
 
     /**
      * Gets all the unique modes (workflow) available
@@ -131,7 +134,9 @@ public class CsvUtils {
         try (FileWriter out = new FileWriter(WORKFLOW_FILE, StandardCharsets.UTF_8)) {
             CSVPrinter printer = new CSVPrinter(out, CSV_FORMAT);
             printer.printRecord((Object[]) Headers.values());
-            printer.printRecord((Object[]) EXAMPLE_TOOL.values());
+            for (Tool tool : TOOL_EXAMPLES) {
+                printer.printRecord((Object[]) tool.values());
+            }
         } catch (IOException ex) {
             System.err.println("ex = " + ex.getMessage());
         }
