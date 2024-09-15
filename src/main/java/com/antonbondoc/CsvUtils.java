@@ -88,6 +88,7 @@ public class CsvUtils {
      */
     private static List<Tool> getTools() {
         if (!WORKFLOW_FILE.exists()) {
+            log.warn("The workflow files does not exist");
             createWorkflowFile();
         }
 
@@ -95,7 +96,10 @@ public class CsvUtils {
         try (final Reader in = new FileReader(WORKFLOW_FILE, StandardCharsets.UTF_8)) {
             final CSVParser csvParser = new CSVParser(in, CSV_FORMAT);
             for (CSVRecord record : csvParser) {
-                if (hasEmptyValues(record)) continue;
+                if (hasEmptyValues(record)) {
+                    log.debug("The record has at least one empty values");
+                    continue;
+                }
 
                 String mode = record.get(Headers.MODE);
                 String type = record.get(Headers.TYPE);
@@ -123,6 +127,7 @@ public class CsvUtils {
      * Create the `workflow.csv` file that would hold the tools configurations
      */
     private static void createWorkflowFile() {
+        log.info("Creating working flow file with default values");
         try (FileWriter out = new FileWriter(WORKFLOW_FILE, StandardCharsets.UTF_8)) {
             CSVPrinter printer = new CSVPrinter(out, CSV_FORMAT);
             printer.printRecord((Object[]) Headers.values());
