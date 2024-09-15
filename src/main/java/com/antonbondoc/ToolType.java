@@ -28,21 +28,21 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Type {
+public enum ToolType {
     APP,
     WEB;
 
-    private final static Map<String, Type> TYPE_MAP;
+    private final static Map<String, ToolType> TYPE_MAP;
 
     static {
-        Map<String, Type> temp = new HashMap<>();
-        for (Type type : Type.values()) {
-            temp.put(type.name().toUpperCase(), type);
+        Map<String, ToolType> temp = new HashMap<>();
+        for (ToolType toolType : ToolType.values()) {
+            temp.put(toolType.name().toUpperCase(), toolType);
         }
         TYPE_MAP = Collections.unmodifiableMap(temp);
     }
 
-    public static Type get(String name) {
+    public static ToolType get(String name) {
         if (name == null) {
             throw new NullPointerException("Tool type name could not be null");
         }

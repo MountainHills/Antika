@@ -66,7 +66,7 @@ public class CsvUtils {
             .setIgnoreEmptyLines(true)
             .build();
 
-    private static final Tool EXAMPLE_TOOL = new Tool("example", Type.APP, "notepad.exe");
+    private static final Tool EXAMPLE_TOOL = new Tool("example", ToolType.APP, "notepad.exe");
 
     /**
      * Gets all the unique modes (workflow) available
@@ -104,7 +104,7 @@ public class CsvUtils {
                 String mode = record.get(Headers.MODE);
                 String type = record.get(Headers.TYPE);
                 String path = record.get(Headers.PATH);
-                tools.add(new Tool(mode, Type.get(type), path));
+                tools.add(new Tool(mode, ToolType.get(type), path));
             }
         } catch (IOException ex) {
             System.err.println("ex = " + ex.getMessage());

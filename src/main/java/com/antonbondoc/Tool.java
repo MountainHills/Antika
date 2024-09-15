@@ -24,7 +24,7 @@
 
 package com.antonbondoc;
 
-public record Tool(String mode, Type type, String path) {
+public record Tool(String mode, ToolType toolType, String path) {
 
     /**
      * Transforms the tool object to string array.
@@ -33,6 +33,6 @@ public record Tool(String mode, Type type, String path) {
      * @return tool values as string array
      */
     public String[] values() {
-        return new String[]{mode, type.name(), path};
+        return new String[]{mode, toolType.name(), path};
     }
 }
