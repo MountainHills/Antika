@@ -28,44 +28,68 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * The Antika application entry point.
  */
 public class Antika {
-    private static final Options OPTIONS;
-    private static final HelpFormatter MAIN_HELP_FORMATTER = new HelpFormatter();
 
-    static {
-        OPTIONS = new Options()
-                .addOption("help", "Display this help message")
-                .addOption("list", "Display list of available workflows")
-                .addOption("flow", "Enter workflow application");
-    }
+    private static final Logger log = LoggerFactory.getLogger(Antika.class);
 
-    public static void main(String[] args) {
-        CommandLineParser parser = new DefaultParser();
-        try {
-            if (args.length == 0) {
-                throw new ParseException("No command entered");
-            }
-            CommandLine cmd = parser.parse(OPTIONS, args);
-            processOptions(cmd);
-        } catch (ParseException e) {
-            printHelp(e.getMessage());
-        }
+    private static final Option OPTION_HELP = Option.builder("h")
+            .longOpt("help")
+            .desc("List out the commands available for Antika")
+            .build();
+
+    private static final Option OPTION_MODE = Option.builder("m")
+            .longOpt("mode")
+            .hasArg()
+            .argName("workflow")
+            .optionalArg(false)
+            .desc("Select the current workflow mode")
+            .build();
+
+    private static Options initializeOptions() {
+        log.debug("Initialize the options for Antika");
+        return new Options()
+                .addOption(OPTION_HELP)
+                .addOption(OPTION_MODE);
     }
 
     private static void processOptions(CommandLine cmd) {
         // No-op
     }
 
-    private static void printHelp(String message) {
-        MAIN_HELP_FORMATTER.printHelp("antika [command]", OPTIONS);
+    private static void openWorkflow() {
+        // No-op
+    }
+
+    private static void printHelp(Options options, String message) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("antika [option]", options);
         System.err.println(message);
         System.exit(1);
     }
+
+    public static void main(String[] args) {
+        Options options = initializeOptions();
+
+        CommandLineParser parser = new DefaultParser();
+        try {
+            if (args.length == 0) {
+                throw new ParseException("No command entered");
+            }
+            CommandLine cmd = parser.parse(options, args);
+            processOptions(cmd);
+        } catch (ParseException e) {
+            printHelp(options, e.getMessage());
+        }
+    }
+
 }

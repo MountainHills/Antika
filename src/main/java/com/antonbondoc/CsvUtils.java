@@ -50,7 +50,7 @@ import java.util.stream.Stream;
  */
 public class CsvUtils {
 
-    private static Logger log = LoggerFactory.getLogger(CsvUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(CsvUtils.class);
 
     private enum Headers {
         MODE, TYPE, PATH
