@@ -67,8 +67,18 @@ public class Antika {
      *
      * @param cmd the command line containing the argument parameters passed by the user
      */
-    private static void processOptions(CommandLine cmd) {
-        // No-op
+    private static void processOptions(Options options, CommandLine cmd) {
+        log.trace("Processing options");
+        if (cmd.hasOption(OPTION_HELP)) {
+            printHelp(options);
+            System.exit(0);
+        } else if (cmd.hasOption(OPTION_MODE)) {
+            openWorkflow();
+            System.exit(0);
+        } else {
+            System.err.println("The args passed is not part of the options");
+            System.exit(-1);
+        }
     }
 
     private static void openWorkflow() {
@@ -79,13 +89,10 @@ public class Antika {
      * Prints out the list of available flags (options) for Antika
      *
      * @param options the available flags for Antika
-     * @param message the cause of the error to print out the help command
      */
-    private static void printHelp(Options options, String message) {
+    private static void printHelp(Options options) {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("antika [option]", options);
-        System.err.println(message);
-        System.exit(1);
     }
 
     public static void main(String[] args) {
@@ -97,9 +104,11 @@ public class Antika {
                 throw new ParseException("No command entered");
             }
             CommandLine cmd = parser.parse(options, args);
-            processOptions(cmd);
+            processOptions(options, cmd);
         } catch (ParseException e) {
-            printHelp(options, e.getMessage());
+            printHelp(options);
+            System.err.println(e.getMessage());
+            System.exit(-1);
         }
     }
 
