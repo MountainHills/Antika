@@ -60,12 +60,20 @@ public class WorkflowHandler {
     }
 
     private void openDesktopApp(List<String> paths) {
-        log.debug("Opening desktop apps");
-        // No-op
+        log.debug("Opening desktop apps | paths: {}", paths);
+        try {
+            for (String app : paths) {
+                ProcessBuilder process = new ProcessBuilder(app);
+                process.start();
+            }
+        } catch (Exception e) {
+            log.error("Unable to open application | {}", e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void openWebApp(List<String> urls) {
-        log.debug("Opening websites");
+        log.debug("Opening websites | urls: {}", urls);
         // No-op
     }
 }
