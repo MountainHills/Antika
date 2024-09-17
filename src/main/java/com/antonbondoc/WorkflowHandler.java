@@ -28,6 +28,10 @@ package com.antonbondoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +42,12 @@ public class WorkflowHandler {
 
     private static final Logger log = LoggerFactory.getLogger(WorkflowHandler.class);
 
+    /**
+     * Placeholder documentation
+     *
+     * @param workflow
+     * @param tools
+     */
     public void openTools(String workflow, List<Tool> tools) {
         log.debug("Filtering tools depending on workflow");
         List<Tool> filtered = tools.stream()
@@ -59,8 +69,14 @@ public class WorkflowHandler {
         openWebApp(webUrls);
     }
 
+    /**
+     * Placeholder documentation
+     *
+     * @param paths
+     */
     private void openDesktopApp(List<String> paths) {
         log.debug("Opening desktop apps | paths: {}", paths);
+
         try {
             for (String app : paths) {
                 ProcessBuilder process = new ProcessBuilder(app);
@@ -72,8 +88,29 @@ public class WorkflowHandler {
         }
     }
 
+    /**
+     * Placeholder documentation
+     *
+     * @param urls
+     */
     private void openWebApp(List<String> urls) {
         log.debug("Opening websites | urls: {}", urls);
-        // No-op
+
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                try {
+                    // Open the URL in the default web browser
+                    for (String url : urls) {
+                        desktop.browse(new URI(url));
+                    }
+                } catch (IOException | URISyntaxException e) {
+                    log.error("Unable to open website | {}", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            System.err.println("Desktop is not supported on this platform.");
+        }
     }
 }
