@@ -25,6 +25,10 @@
 package com.antonbondoc;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,15 +36,36 @@ import java.util.List;
  */
 public class WorkflowHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(WorkflowHandler.class);
+
     public void openTools(String workflow, List<Tool> tools) {
+        log.debug("Filtering tools depending on workflow");
+        List<Tool> filtered = tools.stream()
+                .filter(t -> t.mode().equals(workflow))
+                .toList();
+
+        log.debug("Collect tool paths on respective lists");
+        List<String> appPaths = new ArrayList<>();
+        List<String> webUrls = new ArrayList<>();
+        for (Tool tool : filtered) {
+            switch (tool.toolType()) {
+                case APP -> appPaths.add(tool.path());
+                case WEB -> webUrls.add(tool.path());
+            }
+        }
+
+        log.debug("Opening tools for workflow");
+        openDesktopApp(appPaths);
+        openWebApp(webUrls);
+    }
+
+    private void openDesktopApp(List<String> paths) {
+        log.debug("Opening desktop apps");
         // No-op
     }
 
-    private void openDesktopApp() {
-        // No-op
-    }
-
-    private void openWebApp() {
+    private void openWebApp(List<String> urls) {
+        log.debug("Opening websites");
         // No-op
     }
 }
