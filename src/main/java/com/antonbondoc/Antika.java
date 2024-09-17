@@ -34,6 +34,7 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -65,6 +66,7 @@ public class Antika {
     }
 
     private static final ToolCSVHandler toolCSVHandler = new ToolCSVHandler();
+    private static final WorkflowHandler workflowHandler = new WorkflowHandler();
 
     /**
      * Handle the arguments given by the user to use Antika
@@ -94,10 +96,12 @@ public class Antika {
      * @param workflow the chosen workflow
      */
     private static void openWorkflow(String workflow) {
-        Set<String> availableWorkflows = toolCSVHandler.getWorkflows();
+        List<Tool> tools = toolCSVHandler.getTools();
+        Set<String> availableWorkflows = toolCSVHandler.getWorkflows(tools);
         if (availableWorkflows.contains(workflow)) {
-            // TODO: Open the tools related to workflow
-            // No-op
+            log.debug("Opening tools related to workflow: {}", workflow);
+            workflowHandler.openTools(workflow, tools);
+            System.exit(0);
         } else {
             printWorkflows(availableWorkflows);
             System.err.printf("Workflow: %s is not a valid workflow", workflow);

@@ -77,10 +77,11 @@ public class ToolCSVHandler {
     /**
      * Gets all the unique modes (workflow) available
      *
-     * @return set of unique workflows available in Antika
+     * @param tools list of tools available
+     * @return set of unique workflows available from the given tools
      */
-    public Set<String> getWorkflows() {
-        return getTools().stream()
+    public Set<String> getWorkflows(List<Tool> tools) {
+        return tools.stream()
                 .map(Tool::mode)
                 .collect(Collectors.toSet());
     }
@@ -92,7 +93,7 @@ public class ToolCSVHandler {
      *
      * @return list of tools available in workflow.csv
      */
-    private List<Tool> getTools() {
+    public List<Tool> getTools() {
         if (!WORKFLOW_FILE.exists()) {
             log.warn("The workflow files does not exist");
             createWorkflowFile();
