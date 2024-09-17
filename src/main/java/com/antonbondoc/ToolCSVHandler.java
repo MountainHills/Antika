@@ -46,11 +46,11 @@ import java.util.stream.Stream;
 
 
 /**
- * Utility functions for CSV I/O.
+ * Handler functions for tools CSV I/O.
  */
-public class CsvUtils {
+public class ToolCSVHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(CsvUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ToolCSVHandler.class);
 
     /**
      * The headers for the workflow csv file
@@ -79,7 +79,7 @@ public class CsvUtils {
      *
      * @return set of unique workflows available in Antika
      */
-    public static Set<String> getWorkflows() {
+    public Set<String> getWorkflows() {
         return getTools().stream()
                 .map(Tool::mode)
                 .collect(Collectors.toSet());
@@ -92,7 +92,7 @@ public class CsvUtils {
      *
      * @return list of tools available in workflow.csv
      */
-    private static List<Tool> getTools() {
+    private List<Tool> getTools() {
         if (!WORKFLOW_FILE.exists()) {
             log.warn("The workflow files does not exist");
             createWorkflowFile();
@@ -121,7 +121,7 @@ public class CsvUtils {
     /**
      * Create the `workflow.csv` file that would hold the tools configurations
      */
-    private static void createWorkflowFile() {
+    private void createWorkflowFile() {
         log.info("Creating working flow file with default values");
         try (FileWriter out = new FileWriter(WORKFLOW_FILE, StandardCharsets.UTF_8)) {
             CSVPrinter printer = new CSVPrinter(out, CSV_FORMAT);
@@ -140,7 +140,7 @@ public class CsvUtils {
      * @param record the tool provided in the csv file
      * @return true if at least one value in the record is empty, false otherwise.
      */
-    private static boolean hasEmptyValues(CSVRecord record) {
+    private boolean hasEmptyValues(CSVRecord record) {
         return Stream.of(record.values())
                 .anyMatch(v -> v.trim().isEmpty());
     }

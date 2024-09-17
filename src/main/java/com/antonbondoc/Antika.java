@@ -64,6 +64,8 @@ public class Antika {
                 .addOption(OPTION_MODE);
     }
 
+    private static final ToolCSVHandler toolCSVHandler = new ToolCSVHandler();
+
     /**
      * Handle the arguments given by the user to use Antika
      *
@@ -92,7 +94,7 @@ public class Antika {
      * @param workflow the chosen workflow
      */
     private static void openWorkflow(String workflow) {
-        Set<String> availableWorkflows = CsvUtils.getWorkflows();
+        Set<String> availableWorkflows = toolCSVHandler.getWorkflows();
         if (availableWorkflows.contains(workflow)) {
             // TODO: Open the tools related to workflow
             // No-op
