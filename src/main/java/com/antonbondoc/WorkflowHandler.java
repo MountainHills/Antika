@@ -43,10 +43,10 @@ public class WorkflowHandler {
     private static final Logger log = LoggerFactory.getLogger(WorkflowHandler.class);
 
     /**
-     * Placeholder documentation
+     * Opens all the websites and applications of the given Antika workflow.
      *
-     * @param workflow
-     * @param tools
+     * @param workflow the chosen workflow
+     * @param tools    the list of available tools
      */
     public void openTools(String workflow, List<Tool> tools) {
         log.debug("Filtering tools depending on workflow");
@@ -70,9 +70,9 @@ public class WorkflowHandler {
     }
 
     /**
-     * Placeholder documentation
+     * Opens the applications from the given list of absolute paths.
      *
-     * @param paths
+     * @param paths the absolute paths associated to the given workflow
      */
     private void openDesktopApp(List<String> paths) {
         log.debug("Opening desktop apps | paths: {}", paths);
@@ -84,14 +84,13 @@ public class WorkflowHandler {
             }
         } catch (Exception e) {
             log.error("Unable to open application | {}", e.getMessage());
-            e.printStackTrace();
         }
     }
 
     /**
-     * Placeholder documentation
+     * Opens the websites from the given list using the default browser.
      *
-     * @param urls
+     * @param urls the websites associated to the given workflow
      */
     private void openWebApp(List<String> urls) {
         log.debug("Opening websites | urls: {}", urls);
@@ -106,11 +105,10 @@ public class WorkflowHandler {
                     }
                 } catch (IOException | URISyntaxException e) {
                     log.error("Unable to open website | {}", e.getMessage());
-                    e.printStackTrace();
                 }
             }
         } else {
-            System.err.println("Desktop is not supported on this platform.");
+            log.error("Desktop is not supported on this platform");
         }
     }
 }
