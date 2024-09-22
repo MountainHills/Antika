@@ -64,7 +64,7 @@ public class WorkflowHandler {
             }
         }
 
-        log.debug("Opening tools for workflow");
+        log.info("Opening tools for workflow");
         openDesktopApp(appPaths);
         openWebApp(webUrls);
     }
