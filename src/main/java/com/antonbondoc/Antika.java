@@ -97,6 +97,16 @@ public class Antika {
     }
 
     /**
+     * Prints out the list of available flags (options) for Antika
+     *
+     * @param options the available flags for Antika
+     */
+    private static void printHelp(Options options) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("antika [option]", options);
+    }
+
+    /**
      * Open all tools related to the given workflow.
      * <p>
      * If the workflow is not valid, it would list out the available workflow selections
@@ -112,7 +122,7 @@ public class Antika {
             System.exit(0);
         } else {
             printWorkflows(availableWorkflows);
-            System.err.printf("Workflow: %s is not a valid workflow", workflow);
+            System.err.printf("Workflow: '%s' is not a valid workflow", workflow);
             System.exit(-1);
         }
     }
@@ -128,16 +138,6 @@ public class Antika {
         for (String workflow : workflows) {
             System.out.printf("%d. %s%n", ++idx, workflow);
         }
-    }
-
-    /**
-     * Prints out the list of available flags (options) for Antika
-     *
-     * @param options the available flags for Antika
-     */
-    private static void printHelp(Options options) {
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("antika [option]", options);
     }
 
     public static void main(String[] args) {
