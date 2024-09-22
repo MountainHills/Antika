@@ -80,20 +80,20 @@ public class Antika {
      * @param cmd the command line containing the argument parameters passed by the user
      */
     private static void processOptions(Options options, CommandLine cmd) {
-        log.trace("Processing options");
         if (cmd.hasOption(OPTION_HELP)) {
+            log.debug("Printing help option");
             printHelp(options);
-            System.exit(0);
         } else if (cmd.hasOption(OPTION_INIT)) {
-            // No-op
+            log.debug("Initializing workflow file");
+            toolCSVHandler.createWorkflowFile();
         } else if (cmd.hasOption(OPTION_MODE)) {
+            log.debug("Opening workflow tools");
             String workflow = cmd.getOptionValue(OPTION_MODE).trim();
             openWorkflow(workflow);
-            System.exit(0);
-        } else {
-            System.err.println("The args passed is not part of the options");
-            System.exit(-1);
         }
+
+        log.info("Closing application...");
+        System.exit(0);
     }
 
     /**
@@ -116,6 +116,7 @@ public class Antika {
     private static void openWorkflow(String workflow) {
         List<Tool> tools = toolCSVHandler.getTools();
         Set<String> availableWorkflows = toolCSVHandler.getWorkflows(tools);
+
         if (availableWorkflows.contains(workflow)) {
             log.debug("Opening tools related to workflow: {}", workflow);
             workflowHandler.openTools(workflow, tools);

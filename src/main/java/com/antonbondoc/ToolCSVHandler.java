@@ -95,7 +95,7 @@ public class ToolCSVHandler {
      */
     public List<Tool> getTools() {
         if (!WORKFLOW_FILE.exists()) {
-            System.err.println("The workflow file does not exist. Initialize workflow file with 'init' option.");
+            System.err.println("The workflow file does not exist; Initialize workflow file with 'init' option");
             System.exit(-1);
         }
 
@@ -123,6 +123,11 @@ public class ToolCSVHandler {
      * Create the `workflow.csv` file that would hold the tools configurations
      */
     public void createWorkflowFile() {
+        if (WORKFLOW_FILE.exists()) {
+            System.err.println("The workflow file already exists");
+            System.exit(-1);
+        }
+
         log.info("Creating working flow file with default values");
         try (FileWriter out = new FileWriter(WORKFLOW_FILE, StandardCharsets.UTF_8)) {
             CSVPrinter printer = new CSVPrinter(out, CSV_FORMAT);
