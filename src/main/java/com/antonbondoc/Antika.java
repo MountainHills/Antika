@@ -50,6 +50,11 @@ public class Antika {
             .desc("List out the commands available for Antika")
             .build();
 
+    private static final Option OPTION_INIT = Option.builder("i")
+            .longOpt("init")
+            .desc("Create the initial workflow file for Antika")
+            .build();
+
     private static final Option OPTION_MODE = Option.builder("m")
             .longOpt("mode")
             .hasArg()
@@ -62,6 +67,7 @@ public class Antika {
         log.debug("Initialize the options for Antika");
         return new Options()
                 .addOption(OPTION_HELP)
+                .addOption(OPTION_INIT)
                 .addOption(OPTION_MODE);
     }
 
