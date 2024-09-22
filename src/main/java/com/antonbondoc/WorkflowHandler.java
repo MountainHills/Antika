@@ -28,7 +28,7 @@ package com.antonbondoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -77,13 +77,13 @@ public class WorkflowHandler {
     private void openDesktopApp(List<String> paths) {
         log.debug("Opening desktop apps | paths: {}", paths);
 
-        try {
-            for (String app : paths) {
+        for (String app : paths) {
+            try {
                 ProcessBuilder process = new ProcessBuilder(app);
                 process.start();
+            } catch (IOException e) {
+                log.error("Unable to open application | {}", e.getMessage());
             }
-        } catch (Exception e) {
-            log.error("Unable to open application | {}", e.getMessage());
         }
     }
 
@@ -95,20 +95,14 @@ public class WorkflowHandler {
     private void openWebApp(List<String> urls) {
         log.debug("Opening websites | urls: {}", urls);
 
-        if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            if (desktop.isSupported(Desktop.Action.BROWSE)) {
-                try {
-                    // Open the URL in the default web browser
-                    for (String url : urls) {
-                        desktop.browse(new URI(url));
-                    }
-                } catch (IOException | URISyntaxException e) {
-                    log.error("Unable to open website | {}", e.getMessage());
-                }
+        Desktop desktop = Desktop.getDesktop();
+        for (String url : urls) {
+            try {
+                desktop.browse(new URI(url));
+            } catch (IOException | URISyntaxException e) {
+                log.error("Unable to open website | {}", e.getMessage());
             }
-        } else {
-            log.error("Desktop is not supported on this platform");
         }
     }
+
 }

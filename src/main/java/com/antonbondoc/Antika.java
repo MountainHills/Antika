@@ -83,17 +83,19 @@ public class Antika {
         if (cmd.hasOption(OPTION_HELP)) {
             log.debug("Printing help option");
             printHelp(options);
+            System.exit(0);
         } else if (cmd.hasOption(OPTION_INIT)) {
             log.debug("Initializing workflow file");
             toolCSVHandler.createWorkflowFile();
+            System.exit(0);
         } else if (cmd.hasOption(OPTION_MODE)) {
             log.debug("Opening workflow tools");
             String workflow = cmd.getOptionValue(OPTION_MODE).trim();
             openWorkflow(workflow);
+        } else {
+            System.err.println("Passed args is not an available option");
+            System.exit(-1);
         }
-
-        log.info("Closing application...");
-        System.exit(0);
     }
 
     /**
