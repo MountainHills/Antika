@@ -47,7 +47,7 @@ public class Antika {
 
     private static final Option OPTION_HELP = Option.builder("h")
             .longOpt("help")
-            .desc("List out the commands available for Antika")
+            .desc("List out the options available for Antika")
             .build();
 
     private static final Option OPTION_INIT = Option.builder("i")
@@ -93,8 +93,9 @@ public class Antika {
             String workflow = cmd.getOptionValue(OPTION_MODE).trim();
             openWorkflow(workflow);
         } else {
-            System.err.println("Passed args is not an available option");
-            System.exit(-1);
+            System.out.println("Use antika --help (or -h) for a list of possible options");
+            printHelp(options);
+            System.exit(0);
         }
     }
 
