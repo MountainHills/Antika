@@ -133,6 +133,11 @@ public class Antika {
      * @param workflows the set of available workflows
      */
     private static void printWorkflows(Set<String> workflows) {
+        if (workflows.isEmpty()) {
+            System.out.println("There are no created Antika workflows.");
+            return;
+        }
+
         int idx = 0;
         System.out.println("List of Antika Workflows");
         for (String workflow : workflows) {
