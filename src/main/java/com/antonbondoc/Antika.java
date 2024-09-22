@@ -84,6 +84,8 @@ public class Antika {
         if (cmd.hasOption(OPTION_HELP)) {
             printHelp(options);
             System.exit(0);
+        } else if (cmd.hasOption(OPTION_INIT)) {
+            // No-op
         } else if (cmd.hasOption(OPTION_MODE)) {
             String workflow = cmd.getOptionValue(OPTION_MODE).trim();
             openWorkflow(workflow);
@@ -144,13 +146,13 @@ public class Antika {
         CommandLineParser parser = new DefaultParser();
         try {
             if (args.length == 0) {
-                throw new ParseException("No command entered");
+                throw new ParseException("No option selected");
             }
             CommandLine cmd = parser.parse(options, args);
             processOptions(options, cmd);
         } catch (ParseException e) {
-            printHelp(options);
             System.err.println(e.getMessage());
+            printHelp(options);
             System.exit(-1);
         }
     }
