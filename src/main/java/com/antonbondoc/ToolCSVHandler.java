@@ -63,7 +63,7 @@ public class ToolCSVHandler {
             .setHeader(Headers.class)
             .setSkipHeaderRecord(true)
             .setIgnoreEmptyLines(true)
-            .build();
+            .get();
 
     private static final List<Tool> TOOL_EXAMPLES = List.of(
             new Tool("example", ToolType.APP, "notepad.exe"),
