@@ -26,6 +26,9 @@ package com.antonbondoc.model;
 
 import java.util.List;
 
+/**
+ * This wrapper is used for YAML and JSON parsing.
+ */
 public class WorkflowWrapper {
 
     private List<Workflow> workflows;
