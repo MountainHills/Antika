@@ -55,13 +55,4 @@ public class Workflow {
     public void setWebsites(List<String> websites) {
         this.websites = websites;
     }
-
-    @Override
-    public String toString() {
-        return "Workflow{" +
-                "mode='" + mode + '\'' +
-                ", apps=" + apps +
-                ", websites=" + websites +
-                '}';
-    }
 }
