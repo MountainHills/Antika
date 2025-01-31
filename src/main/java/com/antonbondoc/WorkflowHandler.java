@@ -25,10 +25,7 @@
 package com.antonbondoc;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,8 +37,6 @@ import java.util.List;
  */
 public class WorkflowHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(WorkflowHandler.class);
-
     /**
      * Opens all the websites and applications of the given Antika workflow.
      *
@@ -49,12 +44,10 @@ public class WorkflowHandler {
      * @param tools    the list of available tools
      */
     public void openTools(String workflow, List<Tool> tools) {
-        log.debug("Filtering tools depending on workflow");
         List<Tool> filtered = tools.stream()
                 .filter(t -> t.mode().equals(workflow))
                 .toList();
 
-        log.debug("Collect tool paths on respective lists");
         List<String> appPaths = new ArrayList<>();
         List<String> webUrls = new ArrayList<>();
         for (Tool tool : filtered) {
@@ -64,7 +57,6 @@ public class WorkflowHandler {
             }
         }
 
-        log.info("Opening tools for workflow");
         openDesktopApp(appPaths);
         openWebApp(webUrls);
     }
@@ -75,14 +67,12 @@ public class WorkflowHandler {
      * @param paths the absolute paths associated to the given workflow
      */
     private void openDesktopApp(List<String> paths) {
-        log.debug("Opening desktop apps | paths: {}", paths);
 
         for (String app : paths) {
             try {
                 ProcessBuilder process = new ProcessBuilder(app);
                 process.start();
-            } catch (IOException e) {
-                log.error("Unable to open application | {}", e.getMessage());
+            } catch (IOException ignored) {
             }
         }
     }
@@ -93,14 +83,12 @@ public class WorkflowHandler {
      * @param urls the websites associated to the given workflow
      */
     private void openWebApp(List<String> urls) {
-        log.debug("Opening websites | urls: {}", urls);
 
         Desktop desktop = Desktop.getDesktop();
         for (String url : urls) {
             try {
                 desktop.browse(new URI(url));
-            } catch (IOException | URISyntaxException e) {
-                log.error("Unable to open website | {}", e.getMessage());
+            } catch (IOException | URISyntaxException ignored) {
             }
         }
     }

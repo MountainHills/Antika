@@ -28,8 +28,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -49,8 +47,6 @@ import java.util.stream.Stream;
  * Handler functions for tools CSV I/O.
  */
 public class ToolCSVHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(ToolCSVHandler.class);
 
     /**
      * The headers for the workflow csv file
@@ -104,7 +100,6 @@ public class ToolCSVHandler {
             final CSVParser csvParser = new CSVParser(in, CSV_FORMAT);
             for (CSVRecord record : csvParser) {
                 if (hasEmptyValues(record)) {
-                    log.debug("The record has at least one empty values");
                     continue;
                 }
 
@@ -128,7 +123,6 @@ public class ToolCSVHandler {
             System.exit(-1);
         }
 
-        log.info("Creating working flow file with default values");
         try (FileWriter out = new FileWriter(WORKFLOW_FILE, StandardCharsets.UTF_8)) {
             CSVPrinter printer = new CSVPrinter(out, CSV_FORMAT);
             printer.printRecord((Object[]) Headers.values());
