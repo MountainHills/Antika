@@ -31,8 +31,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
@@ -42,9 +40,6 @@ import java.util.Set;
  * The Antika application entry point.
  */
 public class Antika {
-
-    private static final Logger log = LoggerFactory.getLogger(Antika.class);
-
     private static final Option OPTION_HELP = Option.builder("h")
             .longOpt("help")
             .desc("List out the options available for Antika")
@@ -64,7 +59,6 @@ public class Antika {
             .build();
 
     private static Options initializeOptions() {
-        log.debug("Initialize the options for Antika");
         return new Options()
                 .addOption(OPTION_HELP)
                 .addOption(OPTION_INIT)
@@ -81,15 +75,12 @@ public class Antika {
      */
     private static void processOptions(Options options, CommandLine cmd) {
         if (cmd.hasOption(OPTION_HELP)) {
-            log.debug("Printing help option");
             printHelp(options);
             System.exit(0);
         } else if (cmd.hasOption(OPTION_INIT)) {
-            log.debug("Initializing workflow file");
             toolCSVHandler.createWorkflowFile();
             System.exit(0);
         } else if (cmd.hasOption(OPTION_MODE)) {
-            log.debug("Opening workflow tools");
             String workflow = cmd.getOptionValue(OPTION_MODE).trim();
             openWorkflow(workflow);
         } else {
@@ -121,7 +112,6 @@ public class Antika {
         Set<String> availableWorkflows = toolCSVHandler.getWorkflows(tools);
 
         if (availableWorkflows.contains(workflow)) {
-            log.debug("Opening tools related to workflow: {}", workflow);
             workflowHandler.openTools(workflow, tools);
             System.exit(0);
         } else {
