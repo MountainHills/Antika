@@ -22,8 +22,10 @@
  * SOFTWARE.
  */
 
-package com.antonbondoc;
+package com.antonbondoc.handler;
 
+import com.antonbondoc.model.Tool;
+import com.antonbondoc.model.ToolType;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;

@@ -22,34 +22,17 @@
  * SOFTWARE.
  */
 
-package com.antonbondoc;
+package com.antonbondoc.model;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+public record Tool(String mode, ToolType toolType, String path) {
 
-public enum ToolType {
-    APP,
-    WEB;
-
-    private final static Map<String, ToolType> TYPE_MAP;
-
-    static {
-        Map<String, ToolType> temp = new HashMap<>();
-        for (ToolType toolType : ToolType.values()) {
-            temp.put(toolType.name().toUpperCase(), toolType);
-        }
-        TYPE_MAP = Collections.unmodifiableMap(temp);
-    }
-
-    public static ToolType get(String name) {
-        if (name == null) {
-            throw new NullPointerException("Tool type name could not be null");
-        }
-        String key = name.trim().toUpperCase();
-        if (!TYPE_MAP.containsKey(key)) {
-            throw new IllegalArgumentException(String.format("Invalid '%s' tool type", key));
-        }
-        return TYPE_MAP.get(key);
+    /**
+     * Transforms the tool object to string array.
+     * It would be used to write the records to the CSV
+     *
+     * @return tool values as string array
+     */
+    public String[] values() {
+        return new String[]{mode, toolType.name(), path};
     }
 }

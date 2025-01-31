@@ -22,8 +22,10 @@
  * SOFTWARE.
  */
 
-package com.antonbondoc;
+package com.antonbondoc.handler;
 
+
+import com.antonbondoc.model.Tool;
 
 import java.awt.*;
 import java.io.IOException;
