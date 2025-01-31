@@ -97,7 +97,11 @@ public class ToolCSVHandler {
 
         List<Tool> tools = new ArrayList<>();
         try (final Reader in = new FileReader(WORKFLOW_FILE, StandardCharsets.UTF_8)) {
-            final CSVParser csvParser = new CSVParser(in, CSV_FORMAT);
+            final CSVParser csvParser = CSVParser.builder()
+                    .setReader(in)
+                    .setFormat(CSV_FORMAT)
+                    .get();
+
             for (CSVRecord record : csvParser) {
                 if (hasEmptyValues(record)) {
                     continue;
