@@ -26,9 +26,13 @@ package com.antonbondoc.handler;
 
 import com.antonbondoc.model.Workflow;
 
+import java.util.Set;
+
 public interface FileHandler {
 
     String CURRENT_DIRECTORY = System.getProperty("user.dir");
+
+    Set<String> getWorkflowModes();
 
     Workflow getWorkflow(String mode);
 

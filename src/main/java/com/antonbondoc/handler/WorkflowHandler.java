@@ -25,13 +25,12 @@
 package com.antonbondoc.handler;
 
 
-import com.antonbondoc.model.Tool;
+import com.antonbondoc.model.Workflow;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,24 +42,10 @@ public class WorkflowHandler {
      * Opens all the websites and applications of the given Antika workflow.
      *
      * @param workflow the chosen workflow
-     * @param tools    the list of available tools
      */
-    public void openTools(String workflow, List<Tool> tools) {
-        List<Tool> filtered = tools.stream()
-                .filter(t -> t.mode().equals(workflow))
-                .toList();
-
-        List<String> appPaths = new ArrayList<>();
-        List<String> webUrls = new ArrayList<>();
-        for (Tool tool : filtered) {
-            switch (tool.toolType()) {
-                case APP -> appPaths.add(tool.path());
-                case WEB -> webUrls.add(tool.path());
-            }
-        }
-
-        openDesktopApp(appPaths);
-        openWebApp(webUrls);
+    public void openTools(Workflow workflow) {
+        openApplications(workflow.getApps());
+        openWebsites(workflow.getWebsites());
     }
 
     /**
@@ -68,7 +53,7 @@ public class WorkflowHandler {
      *
      * @param paths the absolute paths associated to the given workflow
      */
-    private void openDesktopApp(List<String> paths) {
+    private void openApplications(List<String> paths) {
 
         for (String app : paths) {
             try {
@@ -84,13 +69,14 @@ public class WorkflowHandler {
      *
      * @param urls the websites associated to the given workflow
      */
-    private void openWebApp(List<String> urls) {
+    private void openWebsites(List<String> urls) {
 
         Desktop desktop = Desktop.getDesktop();
         for (String url : urls) {
             try {
                 desktop.browse(new URI(url));
             } catch (IOException | URISyntaxException ignored) {
+                System.err.printf("'%s' has an invalid URI syntax", url);
             }
         }
     }

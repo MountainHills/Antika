@@ -24,9 +24,10 @@
 
 package com.antonbondoc;
 
-import com.antonbondoc.handler.ToolCSVHandler;
+import com.antonbondoc.handler.FileHandler;
 import com.antonbondoc.handler.WorkflowHandler;
-import com.antonbondoc.model.Tool;
+import com.antonbondoc.handler.YamlHandler;
+import com.antonbondoc.model.Workflow;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -35,7 +36,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import java.util.List;
 import java.util.Set;
 
 
@@ -56,7 +56,7 @@ public class Antika {
     private static final Option OPTION_MODE = Option.builder("m")
             .longOpt("mode")
             .hasArg()
-            .argName("workflow")
+            .argName("workflow-mode")
             .optionalArg(false)
             .desc("Select the current workflow mode")
             .build();
@@ -68,7 +68,7 @@ public class Antika {
                 .addOption(OPTION_MODE);
     }
 
-    private static final ToolCSVHandler toolCSVHandler = new ToolCSVHandler();
+    private static final FileHandler fileHandler = new YamlHandler();
     private static final WorkflowHandler workflowHandler = new WorkflowHandler();
 
     /**
@@ -81,7 +81,7 @@ public class Antika {
             printHelp(options);
             System.exit(0);
         } else if (cmd.hasOption(OPTION_INIT)) {
-            toolCSVHandler.createWorkflowFile();
+            fileHandler.createWorkflowFile();
             System.exit(0);
         } else if (cmd.hasOption(OPTION_MODE)) {
             String workflow = cmd.getOptionValue(OPTION_MODE).trim();
@@ -108,37 +108,22 @@ public class Antika {
      * <p>
      * If the workflow is not valid, it would list out the available workflow selections
      *
-     * @param workflow the chosen workflow
+     * @param mode the chosen workflow mode
      */
-    private static void openWorkflow(String workflow) {
-        List<Tool> tools = toolCSVHandler.getTools();
-        Set<String> availableWorkflows = toolCSVHandler.getWorkflows(tools);
-
-        if (availableWorkflows.contains(workflow)) {
-            workflowHandler.openTools(workflow, tools);
-            System.exit(0);
-        } else {
-            printWorkflows(availableWorkflows);
-            System.err.printf("Workflow: '%s' is not a valid workflow", workflow);
-            System.exit(-1);
-        }
+    private static void openWorkflow(String mode) {
+        Workflow workflow = fileHandler.getWorkflow(mode);
+        workflowHandler.openTools(workflow);
     }
 
     /**
-     * Prints out the list of available workflows for Antika
-     *
-     * @param workflows the set of available workflows
+     * Prints out the list of available workflow modes for Antika
      */
-    private static void printWorkflows(Set<String> workflows) {
-        if (workflows.isEmpty()) {
-            System.out.println("There are no created Antika workflows.");
-            return;
-        }
-
+    private static void printWorkflows() {
+        Set<String> workflowModes = fileHandler.getWorkflowModes();
         int idx = 0;
         System.out.println("List of Antika Workflows");
-        for (String workflow : workflows) {
-            System.out.printf("%d. %s%n", ++idx, workflow);
+        for (String mode : workflowModes) {
+            System.out.printf("%d. %s%n", ++idx, mode);
         }
     }
 
