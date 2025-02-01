@@ -33,6 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class YamlHandler implements FileHandler {
 
@@ -41,22 +43,41 @@ public class YamlHandler implements FileHandler {
     private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
     @Override
+    public Set<String> getWorkflowModes() {
+        List<Workflow> workflows = getWorkflowsFromFile();
+        return workflows.stream()
+                .map(Workflow::getMode)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
     public Workflow getWorkflow(String mode) {
         Workflow workflow = null;
         try {
-            WorkflowWrapper wrapper = mapper.readValue(WORKFLOW_FILE, WorkflowWrapper.class);
-            List<Workflow> workflows = wrapper.getWorkflows();
-
+            List<Workflow> workflows = getWorkflowsFromFile();
             workflow = workflows.stream()
                     .filter(w -> w.getMode().equalsIgnoreCase(mode))
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Workflow does not exist"));
-
-        } catch (IOException | IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             System.err.printf("'%s' workflow does not exist", mode);
             System.exit(-1);
         }
         return workflow;
+    }
+
+    private List<Workflow> getWorkflowsFromFile() {
+        WorkflowWrapper wrapper = null;
+        try {
+            if (!WORKFLOW_FILE.exists()) {
+                throw new IOException("Workflow file does not exist");
+            }
+            wrapper = mapper.readValue(WORKFLOW_FILE, WorkflowWrapper.class);
+        } catch (IOException e) {
+            System.err.print("Unable to read workflow file");
+            System.exit(-1);
+        }
+        return wrapper.getWorkflows();
     }
 
     @Override
