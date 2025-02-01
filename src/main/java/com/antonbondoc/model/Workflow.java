@@ -32,6 +32,15 @@ public class Workflow {
     private List<String> apps;
     private List<String> websites;
 
+    public Workflow() {
+    }
+
+    public Workflow(String mode, List<String> apps, List<String> websites) {
+        this.mode = mode;
+        this.apps = apps;
+        this.websites = websites;
+    }
+
     public String getMode() {
         return mode;
     }
