@@ -27,7 +27,9 @@ package com.antonbondoc.handler;
 import com.antonbondoc.model.Workflow;
 import com.antonbondoc.model.WorkflowWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +42,11 @@ public class YamlHandler implements FileHandler {
 
     private final File WORKFLOW_FILE = Paths.get(CURRENT_DIRECTORY, "workflows.yaml").toFile();
 
-    private final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    private final YAMLFactory yamlFactory = new YAMLFactory()
+            .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
+
+    private final ObjectMapper mapper = new ObjectMapper(yamlFactory)
+            .enable(SerializationFeature.INDENT_OUTPUT);
 
     @Override
     public Set<String> getWorkflowModes() {
@@ -74,6 +80,7 @@ public class YamlHandler implements FileHandler {
             }
             wrapper = mapper.readValue(WORKFLOW_FILE, WorkflowWrapper.class);
         } catch (IOException e) {
+            e.printStackTrace();
             System.err.print("Unable to read workflow file");
             System.exit(-1);
         }
@@ -87,6 +94,13 @@ public class YamlHandler implements FileHandler {
             System.exit(-1);
         }
 
-        // TODO: Implement YAML file creation
+        try {
+            final WorkflowWrapper WRAPPER = new WorkflowWrapper(List.of(EXAMPLE));
+            mapper.writeValue(WORKFLOW_FILE, WRAPPER);
+            System.out.print("Created workflows.yaml file");
+        } catch (IOException e) {
+            System.err.print("Unable to create workflows.yaml file");
+            System.exit(-1);
+        }
     }
 }

@@ -26,11 +26,14 @@ package com.antonbondoc.handler;
 
 import com.antonbondoc.model.Workflow;
 
+import java.util.List;
 import java.util.Set;
 
 public interface FileHandler {
 
     String CURRENT_DIRECTORY = System.getProperty("user.dir");
+
+    Workflow EXAMPLE = new Workflow("example", List.of("notepad.exe"), List.of("www.google.com"));
 
     Set<String> getWorkflowModes();
 

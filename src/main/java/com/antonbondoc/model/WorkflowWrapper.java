@@ -33,6 +33,13 @@ public class WorkflowWrapper {
 
     private List<Workflow> workflows;
 
+    public WorkflowWrapper() {
+    }
+
+    public WorkflowWrapper(List<Workflow> workflows) {
+        this.workflows = workflows;
+    }
+
     public List<Workflow> getWorkflows() {
         return workflows;
     }
