@@ -80,8 +80,7 @@ public class YamlHandler implements FileHandler {
             }
             wrapper = mapper.readValue(WORKFLOW_FILE, WorkflowWrapper.class);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.err.print("Unable to read workflow file");
+            System.err.print(e.getMessage());
             System.exit(-1);
         }
         return wrapper.getWorkflows();
