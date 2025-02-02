@@ -53,6 +53,11 @@ public class Antika {
             .desc("Create the initial workflow file for Antika")
             .build();
 
+    private static final Option OPTION_LIST = Option.builder("ls")
+            .longOpt("list")
+            .desc("List out the available workflow modes")
+            .build();
+
     private static final Option OPTION_MODE = Option.builder("m")
             .longOpt("mode")
             .hasArg()
@@ -65,6 +70,7 @@ public class Antika {
         return new Options()
                 .addOption(OPTION_HELP)
                 .addOption(OPTION_INIT)
+                .addOption(OPTION_LIST)
                 .addOption(OPTION_MODE);
     }
 
@@ -79,17 +85,16 @@ public class Antika {
     private static void processOptions(Options options, CommandLine cmd) {
         if (cmd.hasOption(OPTION_HELP)) {
             printHelp(options);
-            System.exit(0);
         } else if (cmd.hasOption(OPTION_INIT)) {
             fileHandler.createWorkflowFile();
-            System.exit(0);
+        } else if (cmd.hasOption(OPTION_LIST)) {
+            printWorkflowModes();
         } else if (cmd.hasOption(OPTION_MODE)) {
             String workflow = cmd.getOptionValue(OPTION_MODE).trim();
             openWorkflow(workflow);
         } else {
             System.out.println("Use antika --help (or -h) for a list of possible options");
             printHelp(options);
-            System.exit(0);
         }
     }
 
@@ -118,7 +123,7 @@ public class Antika {
     /**
      * Prints out the list of available workflow modes for Antika
      */
-    private static void printWorkflows() {
+    private static void printWorkflowModes() {
         Set<String> workflowModes = fileHandler.getWorkflowModes();
         int idx = 0;
         System.out.println("List of Antika Workflows");
