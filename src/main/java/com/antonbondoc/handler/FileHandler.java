@@ -33,11 +33,28 @@ public interface FileHandler {
 
     String CURRENT_DIRECTORY = System.getProperty("user.dir");
 
+    /**
+     * An example workflow to be written to the workflow file. The notepad.exe may not work with other OS aside from Windows.
+     */
     Workflow EXAMPLE = new Workflow("example", List.of("notepad.exe"), List.of("www.google.com"));
 
+    /**
+     * Read the workflow file and retrieves the set of available workflow modes
+     *
+     * @return the set of workflow modes available
+     */
     Set<String> getWorkflowModes();
 
+    /**
+     * Return the workflow details given a workflow mode.
+     *
+     * @param mode the selected workflow mode
+     * @return the workflow containing the applications and websites to open.
+     */
     Workflow getWorkflow(String mode);
 
+    /**
+     * Creates a workflow file with the extension of the chosen file handler.
+     */
     void createWorkflowFile();
 }
