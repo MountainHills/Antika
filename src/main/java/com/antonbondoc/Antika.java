@@ -26,7 +26,7 @@ package com.antonbondoc;
 
 import com.antonbondoc.handler.FileHandler;
 import com.antonbondoc.handler.WorkflowHandler;
-import com.antonbondoc.handler.YamlHandler;
+import com.antonbondoc.handler.YamlFileHandler;
 import com.antonbondoc.model.Workflow;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -74,7 +74,7 @@ public class Antika {
                 .addOption(OPTION_MODE);
     }
 
-    private static final FileHandler fileHandler = new YamlHandler();
+    private static final FileHandler fileHandler = new YamlFileHandler();
     private static final WorkflowHandler workflowHandler = new WorkflowHandler();
 
     /**

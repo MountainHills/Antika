@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class YamlHandler implements FileHandler {
+public class YamlFileHandler implements FileHandler {
 
     private final File WORKFLOW_FILE = Paths.get(CURRENT_DIRECTORY, "workflows.yml").toFile();
 
