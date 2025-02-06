@@ -21,7 +21,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation 'commons-cli:commons-cli:1.9.0'
     implementation 'org.apache.commons:commons-csv:1.13.0'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2'
     implementation 'org.yaml:snakeyaml:2.3'
 }
 
