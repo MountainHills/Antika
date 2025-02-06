@@ -26,10 +26,6 @@ package com.antonbondoc.handler;
 
 import com.antonbondoc.model.Workflow;
 import com.antonbondoc.model.WorkflowWrapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,13 +36,7 @@ import java.util.stream.Collectors;
 
 public class YamlHandler implements FileHandler {
 
-    private final File WORKFLOW_FILE = Paths.get(CURRENT_DIRECTORY, "workflows.yaml").toFile();
-
-    private final YAMLFactory yamlFactory = new YAMLFactory()
-            .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER);
-
-    private final ObjectMapper mapper = new ObjectMapper(yamlFactory)
-            .enable(SerializationFeature.INDENT_OUTPUT);
+    private final File WORKFLOW_FILE = Paths.get(CURRENT_DIRECTORY, "workflows.yml").toFile();
 
     @Override
     public Set<String> getWorkflowModes() {
