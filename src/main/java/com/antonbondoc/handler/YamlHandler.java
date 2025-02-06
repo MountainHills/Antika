@@ -26,10 +26,18 @@ package com.antonbondoc.handler;
 
 import com.antonbondoc.model.Workflow;
 import com.antonbondoc.model.WorkflowWrapper;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,6 +45,8 @@ import java.util.stream.Collectors;
 public class YamlHandler implements FileHandler {
 
     private final File WORKFLOW_FILE = Paths.get(CURRENT_DIRECTORY, "workflows.yml").toFile();
+
+    private final Yaml yaml = new Yaml();
 
     @Override
     public Set<String> getWorkflowModes() {
@@ -63,17 +73,19 @@ public class YamlHandler implements FileHandler {
     }
 
     private List<Workflow> getWorkflowsFromFile() {
-        WorkflowWrapper wrapper = null;
+        List<Workflow> workflows = new ArrayList<>();
         try {
             if (!WORKFLOW_FILE.exists()) {
                 throw new IOException("Workflow file does not exist");
             }
-            wrapper = mapper.readValue(WORKFLOW_FILE, WorkflowWrapper.class);
+            InputStream input = new FileInputStream(WORKFLOW_FILE);
+            WorkflowWrapper wrapper = yaml.loadAs(input, WorkflowWrapper.class);
+            workflows = wrapper.getWorkflows();
         } catch (IOException e) {
             System.err.print(e.getMessage());
             System.exit(-1);
         }
-        return wrapper.getWorkflows();
+        return workflows;
     }
 
     @Override
@@ -82,11 +94,11 @@ public class YamlHandler implements FileHandler {
             System.err.println("The workflow file already exists");
             System.exit(-1);
         }
-
-        try {
+        try (Writer writer = new FileWriter(WORKFLOW_FILE)) {
             final WorkflowWrapper WRAPPER = new WorkflowWrapper(List.of(EXAMPLE));
-            mapper.writeValue(WORKFLOW_FILE, WRAPPER);
-            System.out.print("Created workflows.yaml file");
+            String content = yaml.dumpAs(WRAPPER, Tag.MAP, DumperOptions.FlowStyle.BLOCK);
+            writer.write(content);
+            System.out.print("Created workflows.yml file");
         } catch (IOException e) {
             System.err.print("Unable to create workflows.yaml file");
             System.exit(-1);
