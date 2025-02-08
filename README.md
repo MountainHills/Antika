@@ -13,9 +13,10 @@ antika --mode writing
 It would open all the applications related to writing workflow as configured by the professional in the workflow file. It can be a Google Doc to write, Wikipedia to search for references, or a simple notepad to store temporary notes.
 
 ## Features
-- Generates `workflow.csv` upon initialization to allow the user to configure the tools needed to be open for a given workflow.
+- Generates `workflows.yml` upon initialization to allow the user to configure the tools needed to be open for a given workflow.
 - Opens all the tools (websites and desktop applications) upon command.
 
+# For Development
 ## Prerequisites
 - Java 21 or higher
 - Gradle
@@ -38,7 +39,7 @@ cd Antika
 
 4. Run the JAR:
 ```bash
-java -jar build/libs/Antika-1.0.0-all.jar
+java -jar build/libs/Antika-2.0.0-all.jar
 ```
 
 ***Note:*** Create a batch file or shell script for running the application to make it convenient to run.
@@ -47,7 +48,7 @@ Batch file:
 ```bat
 @echo off
 REM Path to Antika JAR file
-set JAR_PATH="%~dp0Antika-1.0.0-all.jar"
+set JAR_PATH="%~dp0Antika-2.0.0-all.jar"
 
 REM Call java to run your JAR with passed arguments
 java -jar %JAR_PATH% %*
@@ -57,7 +58,7 @@ Shell script:
 ```
 #!/bin/bash
 # Path to Antika JAR file
-JAR_PATH="$(dirname "$0")/Antika-1.0.0-all.jar"
+JAR_PATH="$(dirname "$0")/Antika-2.0.0-all.jar"
 
 # Call java to run your JAR with passed arguments
 java -jar "$JAR_PATH" "$@"
@@ -70,14 +71,15 @@ antika [option]
 ```
 ### Options:
 ```
- -h,--help              List out the options available for Antika
- -i,--init              Create the initial workflow file for Antika
- -m,--mode <workflow>   Select the current workflow mode
+ -h,--help                   List out the options available for Antika
+ -i,--init                   Create the initial workflow file for Antika
+ -ls,--list                  List out the available workflow modes
+ -m,--mode <workflow-mode>   Select the current workflow mode
 ```
 
 ### Examples:
 
-***IMPORTANT:*** This option is important to create the initial `workflow.csv`. Upon initialization, it would have a pre-generated workflow named `example`.
+***IMPORTANT:*** This option is important to create the initial `workflows.yml`. Upon initialization, it would have a pre-generated workflow named `example`.
 ```bash
 antika --init
 ```
