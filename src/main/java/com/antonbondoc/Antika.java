@@ -134,7 +134,6 @@ public class Antika {
 
     public static void main(String[] args) {
         Options options = initializeOptions();
-
         CommandLineParser parser = new DefaultParser();
         try {
             if (args.length == 0) {
