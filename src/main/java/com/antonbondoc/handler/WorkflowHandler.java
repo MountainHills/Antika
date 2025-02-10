@@ -54,7 +54,10 @@ public class WorkflowHandler {
      * @param paths the absolute paths associated to the given workflow
      */
     private void openApplications(List<String> paths) {
-
+        if (paths == null) {
+            System.out.println("[WARN] There are no applications to open");
+            return;
+        }
         for (String app : paths) {
             try {
                 ProcessBuilder process = new ProcessBuilder(app);
@@ -70,7 +73,10 @@ public class WorkflowHandler {
      * @param urls the websites associated to the given workflow
      */
     private void openWebsites(List<String> urls) {
-
+        if (urls == null) {
+            System.out.println("[WARN] There are no urls to open");
+            return;
+        }
         Desktop desktop = Desktop.getDesktop();
         for (String url : urls) {
             try {
